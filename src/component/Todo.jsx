@@ -3,7 +3,7 @@ import todo_icon from "../assets/todo_icon.png";
 import TodoItems from "./TodoItems";
 
 const Todo = () => {
-	const [todoList, setTodoList] = useState([]);
+	const [todoList, setTodoList] = useState(localStorage.getItem("todo")? JSON.parse(localStorage.getItem("todo")) : []);
 
 	const textRef = useRef(null);
 
@@ -30,20 +30,20 @@ const Todo = () => {
 		});
 	};
 
-	// const toggleTodo = (id) => {
-	// 	setTodoList((prevTodo) => {
-	// 		return prevTodo.map((todo) => {
-	// 			if (todo.id === id) {
-	// 				return { ...todo, isComplete: !todo.isComplete };
-	// 			}
-	// 			return todo;
-	// 		});
-	// 	});
-	// };
+	const toggleTodo = (id) => {
+		setTodoList((prevTodo) => {
+			return prevTodo.map((todo) => {
+				if (todo.id === id) {
+					return { ...todo, isComplete: !todo.isComplete };
+				}
+				return todo;
+			});
+		});
+	};
 
-	// useEffect(() => {
-	// 	console.log(todoList);
-	// }, [todoList]);
+	useEffect(() => {
+		localStorage.setItem("todo", JSON.stringify(todoList));
+	}, [todoList]);
 
 	return (
 		<div
@@ -82,7 +82,7 @@ const Todo = () => {
 							id={todoItem.id}
 							isComplete={todoItem.isComplete}
 							deleteTodo={deleteTodo}
-							// toggleTodo={toggleTodo}
+							toggleTodo={toggleTodo}
 						/>
 					);
 				})}

@@ -134,4 +134,23 @@ E. Mark task as complete or incomplete
                     })
                 })
         }
-    2. link this toggleTodo function with the todo item div
+    2. link this toggleTodo function with the todo item div as prop
+    3. In TodoItem.jsx comp, inside div tag, add the onClick event to use toggleTodo function
+    4. create useEffect inside Todo.jsx (after toggleTodo function) and print todoList to check whether it is updating the value of isComplete or not
+        useEffect(() => {
+		    console.log(todoList);
+	    }, [todoList]);
+    5. Inside TodoItems, in the img tag for tick/untick, display tick img if inComplete = true and vice versa
+        <img  src={isComplete ? tick : not_tick} alt="" className='w-7'/>
+    6. Inside TodoItems, in the p tag, create a linethrough across the text if isComplete = true and vice versa
+        <p className={`text-slate-700 ml-4 text-[17px] ${isComplete ? "line-through" : ""}`}>{text}</p>
+        -Note: we use TEMPLATE LITERAL to achieve this
+
+F. Store task list in the browser
+    1. In the useEffect of Todo comp
+        useEffect(() => {
+		    localStorage.setItem("todo", JSON.stringify(todoList));
+	    }, [todoList]);
+    2. It will store the data in local storage but upon refresh it will resit because todoList state var resets to an empty array after every refresh. so instead we will fetch the todoList from the localstorage
+        const [todoList, setTodoList] = useState(localStorage.getItem("todo")? JSON.parse(localStorage.getItem("todo")) : []);
+        - We check if there is any "todo" key named object inside localstorage, if yes then we convert the JSON string into object and fetch it and if there is no todo inside localstorage then we just initialise with an empty array
